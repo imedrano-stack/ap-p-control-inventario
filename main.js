@@ -30,7 +30,7 @@ let index = 0
 
 //Valida si todos los campos estan llenos//
 function validar(){
-    if (codigo.value == "" || nombre.value == "" || desc.value == "" || cantidad.value =="" || costo.value ==""){
+    if (codigo.value == "" || nombre.value == "" || descripcion.value == "" || cantidad.value =="" || costo.value ==""){
         return 0;
     }
     else{
@@ -46,7 +46,7 @@ function encontrar(vector,codigo){
     //Se busca en cada elemento del vector hasta encontrar un elemento con el mismo codigo//
     vector.forEach((p,i) =>{
         if (p.id == codigo.value){
-            index = i++;
+            index = i+1;
         }
     })
     
@@ -72,6 +72,26 @@ function borrar(vector,id){
     return vector;
 }
 
+//Crea una tabla vacía//
+function crearTabla(){
+
+    //Crea un div para tener un espacio para la tabla//
+    div.textContent="";
+
+    //Se inserta una plantilla de la tabla
+    div.insertAdjacentHTML("beforeend",`
+    <table id="tabla1" style="text-align:center">
+        <thead>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Costo</th>
+        <thead>
+        <tbody id="tabla" style="text-align:center">
+        </tbody>`
+    );
+}
 /////////////////////////////Usabilidad de los botones//////////////////////////////////////////////////////////////
 
 btnAgregar.addEventListener("click",()=>{
@@ -95,9 +115,9 @@ btnAgregar.addEventListener("click",()=>{
             var objeto = {
                 "id":codigo.value,
                 "nombre":nombre.value,
-                "desc":desc.value,
-                "cant":cantidad.value,
-                "cost":costo.value
+                "descripcion":descripcion.value,
+                "cantidad":cantidad.value,
+                "costo":costo.value
             }
 
             //Si la variable "contador" es menor a 20//
@@ -166,9 +186,9 @@ btnAgregar.addEventListener("click",()=>{
             var objeto = {
                 "id":codigo.value,
                 "nombre":nombre.value,
-                "desc":desc.value,
-                "cant":cantidad.value,
-                "cost":costo.value
+                "descripcion":descripcion.value,
+                "cantidad":cantidad.value,
+                "costo":costo.value
             }
 
             //Si la variable "contador" es menor a 20//
@@ -256,4 +276,30 @@ btnBorrar.addEventListener("click",()=>{
         div.textContent="";
         div.insertAdjacentHTML("beforeend","<p>Producto eliminado.</p>");
     }
+})
+
+btnListar.addEventListener("click",()=>{
+
+    //Se usa el metódo "crearTabla" para insertar una tabla//
+    crearTabla();
+
+    console.log(productos);
+    
+    //Se declara variable tabla referenciando la tabla recien insertada//
+    let tabla = document.querySelector("#tabla");
+
+    //Por cada elemento
+    productos.forEach(p =>{
+        let ren = tabla.insertRow(-1);
+        let columna0 = ren.insertCell(0);
+        let columna1 = ren.insertCell(1);
+        let columna2 = ren.insertCell(2);
+        let columna3 = ren.insertCell(3);
+        let columna4 = ren.insertCell(4);
+        columna0.textContent = p.id;
+        columna1.textContent = p.nombre;
+        columna2.textContent = p.descripcion;
+        columna3.textContent = p.cantidad;
+        columna4.textContent = p.costo;
+    })
 })
