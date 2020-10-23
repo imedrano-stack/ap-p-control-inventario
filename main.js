@@ -381,5 +381,6 @@ btnListarInverso.addEventListener("click",()=>{
         columna4.textContent = p.costo;
     })
 
+    //Por si queremos volver a listar otra vez normal la tabla//
     invertir(productos);
 })
