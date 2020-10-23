@@ -92,6 +92,14 @@ function crearTabla(){
         </tbody>`
     );
 }
+
+//Invierte el vector//
+function invertir(vector){
+
+    const reversed = vector.reverse()
+
+    return reversed;
+}
 /////////////////////////////Usabilidad de los botones//////////////////////////////////////////////////////////////
 
 btnAgregar.addEventListener("click",()=>{
@@ -278,6 +286,50 @@ btnBorrar.addEventListener("click",()=>{
     }
 })
 
+btnBuscar.addEventListener("click",()=>{
+
+    //Se declara index que usa el metóto "encontrar", usando el vector y el código"//
+    index = encontrar(productos,codigo)
+
+    //Si el método no encuentra el producto en el vector//
+    if (index == 0){
+        div.textContent="";
+        div.insertAdjacentHTML("beforeend","<p>El producto no existe</p>");
+    }
+
+    //Si el método encuentra el producto en el vector//
+    else{
+
+        //Se resta un entero para poder estar en el lugar real en el vector//
+        index--;
+
+        
+        let atributos =["id","nombre","descripcion","cantidad","costo"];
+        let labels = ["Código","Nombre","Descripción","Cantidad","Costo"];
+        
+        //Crea un div para poder insertar la lista//
+        div.textContent="";
+        div.insertAdjacentHTML("beforeend","<ul id='lista'></ul>")
+
+        //Se declara variable tabla referenciando la tabla recien insertada//
+        let lista = document.querySelector("#lista");
+        
+        //Ciclo que corre una vez por cada atributo//
+        for (let i = 0; i < 5; i++){
+
+            //Se crea un elemento "li"//
+            let item = document.createElement("li");
+
+            //Se agrega en este elemento primero la etiqueta de la información y despues en el vector se busca el lugar
+            //del producto y se imprimen los atributos por el orden del vector//
+            item.textContent = labels[i] + ": " + productos[index][atributos[i]];
+            
+            //Se agrega a la lista el item//
+            lista.appendChild(item);
+        }
+    }
+ })
+
 btnListar.addEventListener("click",()=>{
 
     //Se usa el metódo "crearTabla" para insertar una tabla//
@@ -302,4 +354,32 @@ btnListar.addEventListener("click",()=>{
         columna3.textContent = p.cantidad;
         columna4.textContent = p.costo;
     })
+})
+
+btnListarInverso.addEventListener("click",()=>{
+    
+    //Se usa el metódo "crearTabla" para insertar una tabla//
+    crearTabla();
+    
+    //Se usa el metódo "invertir", para invertir el vector//
+    invertir(productos);
+
+    let tabla = document.querySelector("#tabla");
+    
+    //Por cada elemento del vector se inserta en la tabla//
+    productos.forEach(p =>{
+        let renglon = tabla.insertRow(-1);
+        let columna0 = renglon.insertCell(0);
+        let columna1 = renglon.insertCell(1);
+        let columna2 = renglon.insertCell(2);
+        let columna3 = renglon.insertCell(3);
+        let columna4 = renglon.insertCell(4);
+        columna0.textContent = p.id;
+        columna1.textContent = p.nombre;
+        columna2.textContent = p.descripcion;
+        columna3.textContent = p.cantidad;
+        columna4.textContent = p.costo;
+    })
+
+    invertir(productos);
 })
