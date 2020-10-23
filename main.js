@@ -28,52 +28,7 @@ let index = 0
 
 /////////////////////////////Funciones/////////////////////////////////////////////////////////////////////////////
 
-function encontrar(vector,codigo){
-    
-    let index = 0;
-    
-    vector.forEach((p,i) =>{
-        if (p.id == codigo.value){
-            index = i++;
-        }
-    })
-    
-    return index;
-}
-
-function crearTabla(){
-
-    div.textContent="";
-    div.insertAdjacentHTML("beforeend",`<table id="t1" style="text-align:center">
-    <thead>
-    <th>Código</th>
-    <th>Nombre</th>
-    <th>Descripción</th>
-    <th>Cantidad</th>
-    <th>Costo</th>
-    <thead>
-    <tbody id="tabla" style="text-align:center"></tbody>`);
-}
-
-function invertir(vector){
-
-    let temp;
-    let n = vector.length
-    for (let i = 0; i < n/2; i++){
-        temp = vector[i];
-        vector[i] = vector[n-i-1];
-        vector[n-i-1] = temp;
-    }
-
-    for(let j = 0;j<n;j++){
-        if (productos[j] == undefined){
-            delete productos[j]
-        }
-    }
-
-    return vector;
-}
-
+//Valida si todos los campos estan llenos//
 function validar(){
     if (codigo.value == "" || nombre.value == "" || desc.value == "" || cantidad.value =="" || costo.value ==""){
         return 0;
@@ -83,12 +38,37 @@ function validar(){
     }
 }
 
+//Encuentra un producto por medio de codigo//
+function encontrar(vector,codigo){
+    
+    let index = 0;
+    
+    //Se busca en cada elemento del vector hasta encontrar un elemento con el mismo codigo//
+    vector.forEach((p,i) =>{
+        if (p.id == codigo.value){
+            index = i++;
+        }
+    })
+    
+    //Regresa la posición donde se encuentra el elemento//
+    return index;
+}
+
+//Borra un producto por medio de su id//
 function borrar(vector,id){
+
+    //Borra el elemento en la posición del "id"//
     delete vector[id]
-    for(let j = id;j<vector.length;j++){
-        vector[j] = vector[j+1];
+
+    //Recorre el vector a la izquierda//
+    for(let i = id;i<vector.length;i++){
+        vector[i] = vector[i+1];
     }
+
+    //Borra el elemento repetido al final del vector//
     vector.length--;
+
+    //Regreso el vector final//
     return vector;
 }
 
@@ -247,5 +227,33 @@ btnAgregar.addEventListener("click",()=>{
             div.textContent="";
             div.insertAdjacentHTML("beforeend","<p>Algún campo esta vacío o no se puede insertar en el espacio indicado.</p>");
         }
+    }
+})
+
+btnBorrar.addEventListener("click",()=>{
+
+    //Se delcara index y se le asigna el metodo "encontrar"//
+    index = encontrar(productos,codigo);
+    
+    //Si el metódo de busqueda no encontro el elemento en el vector//
+    if (index == 0){
+
+        //Se ingresa texto avisando de que no existe el producto//
+        div.textContent="";
+        div.insertAdjacentHTML("beforeend","<p>El producto no existe</p>");
+    }
+
+    //Si el metódo de busqueda encontro el elemento en el vector
+    else{
+
+        //Se resta una unidad para que coincida con la posición real del vector//
+        index--
+
+        //Se usa el metódo de barrado usando el vector y la posición del elemento a borrar//
+        borrar(productos,index);
+
+        //Se ingresa un mensaje de confirmación que se elimino el elemento//
+        div.textContent="";
+        div.insertAdjacentHTML("beforeend","<p>Producto eliminado.</p>");
     }
 })
